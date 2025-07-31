@@ -1,8 +1,18 @@
 'use client';
 
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import { gothicTheme } from '@/theme/theme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import LayoutShell from '@/components/LayoutShell';
+import { ThemeProviderCustom, useThemeCustom } from '@/context/ThemeContext';
+
+function ThemedApp({ children }: { children: React.ReactNode }) {
+  const { currentTheme } = useThemeCustom();
+  return (
+    <ThemeProvider theme={currentTheme}>
+      <CssBaseline />
+      <LayoutShell>{children}</LayoutShell>
+    </ThemeProvider>
+  );
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,10 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <ThemeProvider theme={gothicTheme}>
-          <CssBaseline />
-          <LayoutShell>{children}</LayoutShell>
-        </ThemeProvider>
+        <ThemeProviderCustom>
+          <ThemedApp>{children}</ThemedApp>
+        </ThemeProviderCustom>
       </body>
     </html>
   );

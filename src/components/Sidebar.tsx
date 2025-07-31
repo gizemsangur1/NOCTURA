@@ -5,6 +5,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTheme } from '@mui/material/styles';
 
 const navItems = [
   { label: 'Vault', href: '/vault', icon: <ArticleIcon /> },
@@ -13,14 +14,15 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const theme = useTheme();
 
   return (
     <Box
       sx={{
         width: 240,
         height: '100vh',
-        bgcolor: '#1a1515',
-        borderRight: '1px solid #2b2b2b',
+        bgcolor: theme.palette.background.paper,
+        borderRight: `1px solid ${theme.palette.divider}`,
         position: 'fixed',
         top: 0,
         left: 0,
@@ -34,7 +36,7 @@ export default function Sidebar() {
         sx={{
           fontFamily: 'Cinzel',
           fontSize: '1.4rem',
-          color: '#b92e34',
+          color: theme.palette.primary.main,
           mb: 4,
         }}
       >
@@ -47,11 +49,11 @@ export default function Sidebar() {
             <ListItemButton
               selected={pathname.startsWith(item.href)}
               sx={{
-                color: '#e0e0e0',
+                color: theme.palette.text.primary,
                 borderRadius: 1,
                 '&.Mui-selected': {
-                  bgcolor: '#2a1a1a',
-                  color: '#b92e34',
+                  bgcolor: theme.palette.action.selected,
+                  color: theme.palette.primary.main,
                 },
               }}
             >

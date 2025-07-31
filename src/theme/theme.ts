@@ -1,24 +1,33 @@
 import { createTheme } from '@mui/material/styles';
 
-export const gothicTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#1a1515',     // dusty blood brown/black
-      paper: '#221f1f',        // old book dark gray
+export const themes = {
+  bloodMoon: createTheme({
+    palette: {
+      mode: 'dark',
+      background: { default: '#1a0000', paper: '#2a0000' },
+      primary: { main: '#b92e34' },
+      text: { primary: '#f0eaea', secondary: '#b98' },
     },
-    primary: {
-      main: '#b92e34',         // blood red
+    typography: { fontFamily: `'Cinzel', 'EB Garamond', serif` },
+  }),
+
+  fogGrey: createTheme({
+    palette: {
+      mode: 'dark',
+      background: { default: '#1a1a1a', paper: '#2e2e2e' },
+      primary: { main: '#aaa' },
+      text: { primary: '#ccc', secondary: '#888' },
     },
-    secondary: {
-      main: '#6a4c93',         // faded purple
+    typography: { fontFamily: `'EB Garamond', serif` },
+  }),
+
+  mourningViolet: createTheme({
+    palette: {
+      mode: 'dark',
+      background: { default: '#110d13', paper: '#1e1723' },
+      primary: { main: '#6a4c93' },
+      text: { primary: '#e6daff', secondary: '#8b7aa6' },
     },
-    text: {
-      primary: '#e0e0e0',      // bone white
-      secondary: '#888',
-    },
-  },
-  typography: {
-    fontFamily: `'Cinzel', 'EB Garamond', 'serif'`,
-  },
-});
+    typography: { fontFamily: `'Cinzel', 'EB Garamond', serif` },
+  }),
+};

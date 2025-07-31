@@ -3,6 +3,7 @@
 import { AppBar, Box, Toolbar, Typography, IconButton } from '@mui/material';
 import WbTwilightIcon from '@mui/icons-material/WbTwilight';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import ThemeSwitcher from './ThemeSwitcher';
 
 export default function Topbar() {
   const date = new Date().toLocaleDateString('en-GB', {
@@ -38,9 +39,7 @@ export default function Topbar() {
         </Typography>
 
         <Box>
-          <IconButton color="inherit">
-            <DarkModeIcon />
-          </IconButton>
+         <ThemeSwitcher/>
         </Box>
       </Toolbar>
     </AppBar>
