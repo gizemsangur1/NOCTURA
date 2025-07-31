@@ -2,6 +2,7 @@
 
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { gothicTheme } from '@/theme/theme';
+import LayoutShell from '@/components/LayoutShell';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider theme={gothicTheme}>
           <CssBaseline />
-          {children}
+          <LayoutShell>{children}</LayoutShell>
         </ThemeProvider>
       </body>
     </html>
