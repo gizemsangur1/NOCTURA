@@ -8,6 +8,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 export default function RegisterPage() {
   const { register } = useAuth();
   const router = useRouter();
+    const { user, userData } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +24,10 @@ export default function RegisterPage() {
       setError(err.message || "Registration failed");
     }
   };
+
+if(user){
+  router.push("/");
+}
 
   return (
     <Box maxWidth={400} mx="auto" mt={6}>

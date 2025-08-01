@@ -8,37 +8,38 @@ import {
   signOut,
   User as FirebaseUser,
 } from "firebase/auth";
-import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
 
 type User = {
   uid: string;
   email: string | null;
 };
 
-type FirestoreUser = {
-  email: string;
+type UserData = {
   name?: string;
   surname?: string;
   username?: string;
-  createdAt?: Date;
+  email: string;
+  createdAt: Date;
 };
 
 type AuthContextType = {
   user: User | null;
-  userData: FirestoreUser | null;
+  userData: UserData | null;
   isAuthenticated: boolean;
   loading: boolean;
   register: (email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  refreshUserData: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [userData, setUserData] = useState<FirestoreUser | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
 
   const formatUser = (fbUser: FirebaseUser): User => ({
@@ -47,25 +48,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   const fetchUserData = async (uid: string) => {
-    try {
-      const docRef = doc(db, "users", uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserData(docSnap.data() as FirestoreUser);
-      } else {
-        console.warn("No user data found for UID:", uid);
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setUserData(docSnap.data() as UserData);
+    } else {
+      setUserData(null);
     }
   };
 
   const register = async (email: string, password: string) => {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
     await setDoc(doc(db, "users", user.uid), {
@@ -92,12 +85,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUserData(null);
   };
 
+  const refreshUserData = async () => {
+    if (user?.uid) {
+      await fetchUserData(user.uid);
+    }
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (fbUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser) {
         const formatted = formatUser(fbUser);
         setUser(formatted);
-        fetchUserData(fbUser.uid);
+        await fetchUserData(formatted.uid);
       } else {
         setUser(null);
         setUserData(null);
@@ -118,6 +117,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         register,
         login,
         logout,
+        refreshUserData,
       }}
     >
       {children}

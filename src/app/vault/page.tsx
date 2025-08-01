@@ -5,17 +5,32 @@ import Link from "next/link";
 import { useState } from "react";
 import { useNoteStore } from "@/lib/useNoteStore";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function VaultPage() {
   const { notes } = useNoteStore();
   const router = useRouter();
+  const { user, userData } = useAuth();
+
+  console.log(userData)
 
   return (
     <>
+      <Typography
+        color="primary"
+        sx={{
+          fontFamily: "Cinzel",
+          fontWeight: "bold",
+          fontSize: "24px",
+          mt:10
+        }}
+      >
+        WELCOME TO NOCTURA {userData?.name}
+      </Typography>
       <Button
         variant="contained"
         color="primary"
-        sx={{ mb: 3, mt: 10 }}
+        sx={{ mb: 3, mt: 3 }}
         onClick={() => router.push("/vault/addNote")}
       >
         + Add Note
@@ -38,19 +53,7 @@ export default function VaultPage() {
                   boxShadow: "0 0 4px #00000080",
                 }}
               >
-                <Typography
-                  color="primary"
-                  sx={{
-                    fontFamily: "Cinzel",
-                    fontWeight: "bold",
-                    fontSize: "24px",
-                  }}
-                >
-                  {note.title}
-                </Typography>
-                <Typography color="primary" sx={{ fontSize: "16px" }}>
-                  {note.tags?.join(", ") || "untagged"}
-                </Typography>
+                
               </div>
             </Link>
           </Grid>

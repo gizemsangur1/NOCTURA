@@ -14,7 +14,7 @@ import { useAuth } from "@/context/AuthContext";
 import { db } from "@/lib/firebase";
 
 export default function SettingsPage() {
-  const { user, userData } = useAuth();
+  const { user, userData, refreshUserData } = useAuth(); // 👈 refreshUserData alındı
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -37,6 +37,9 @@ export default function SettingsPage() {
       name,
       surname,
     });
+
+    // 🔁 Güncel verileri yeniden çek
+    await refreshUserData();
 
     setSuccess(true);
     setTimeout(() => setSuccess(false), 2000);

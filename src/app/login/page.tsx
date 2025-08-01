@@ -8,6 +8,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
+    const { user, userData } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +24,9 @@ export default function LoginPage() {
       setError(err.message || "Login failed");
     }
   };
+  if(user){
+    router.push("/");
+  }
 
   return (
     <Box maxWidth={400} mx="auto" mt={6}>
