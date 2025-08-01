@@ -12,10 +12,11 @@ import {
   MenuItem,
   InputLabel,
 } from "@mui/material";
+import { usePathname } from "next/navigation";
 
 const frameList = [
   { name: "None", value: null },
-  { name: "Vintage Frame", value: "/frames/frame1.png" }, 
+  { name: "Vintage Frame", value: "/frames/frame1.png" },
 ];
 
 const effectList = ["none", "grayscale(100%)", "sepia(100%)"];
@@ -26,17 +27,41 @@ export default function PhotoBooth() {
   const [frame, setFrame] = useState<string | null>(frameList[1].value);
   const [effect, setEffect] = useState(effectList[0]);
   const [photos, setPhotos] = useState<string[]>([]);
+  const streamRef = useRef<MediaStream | null>(null);
+  const pathname = usePathname();
 
+  
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
+    const startCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        streamRef.current = stream;
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           videoRef.current.play();
         }
-      })
-      .catch((err) => console.error("Camera error:", err));
+      } catch (err) {
+        console.error("Kamera başlatılamadı:", err);
+      }
+    };
+
+    startCamera();
+
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => {
+          track.stop();
+        });
+        streamRef.current = null;
+      }
+	  
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.srcObject = null;
+      }
+
+      console.log("Kamera kapatıldı.");
+    };
   }, []);
 
   const capturePhoto = () => {
@@ -57,10 +82,10 @@ export default function PhotoBooth() {
       if (frame) {
         ctx.beginPath();
         ctx.ellipse(
-          width * 0.5, 
-          height * 0.55, 
-          width * 0.32, 
-          height * 0.35, 
+          width * 0.5,
+          height * 0.55,
+          width * 0.32,
+          height * 0.35,
           0,
           0,
           Math.PI * 2
