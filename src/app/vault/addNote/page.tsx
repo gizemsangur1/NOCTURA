@@ -1,13 +1,60 @@
-import { Button, Grid, TextField } from '@mui/material'
-import React from 'react'
+"use client";
 
-export default function AddNote() {
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { TextField, Button, Box, Typography } from "@mui/material";
+import { useAuth } from "@/context/AuthContext";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+export default function AddNotePage() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleSave = async () => {
+    if (!user) return;
+
+    await addDoc(collection(db, "users", user.uid, "notes"), {
+      title,
+      content,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+
+    router.push("/vault"); 
+  };
+
   return (
-	<Grid container sx={{marginTop:10,width:"100%",border:"1px solid white",padding:"10px"}}>
-		<Grid size={12} sx={{width:"100%"}}>
-			<TextField multiline sx={{width:"100%"}}/>
-		</Grid>
-		<Button>SAVE</Button>
-	</Grid>
-  )
+    <Box sx={{ maxWidth: 600, mx: "auto", mt: 5 }}>
+      <Typography variant="h5" gutterBottom>
+        New Note
+      </Typography>
+      <TextField
+        label="Title"
+        fullWidth
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        margin="normal"
+      />
+      <TextField
+        label="Content"
+        fullWidth
+        multiline
+        rows={6}
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        margin="normal"
+      />
+      <Button
+        variant="contained"
+        onClick={handleSave}
+        sx={{ mt: 2 }}
+        disabled={!title.trim()}
+      >
+        Save Note
+      </Button>
+    </Box>
+  );
 }

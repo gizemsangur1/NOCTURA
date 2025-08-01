@@ -4,12 +4,14 @@ import {
   ArrowForwardIos,
   PauseCircle,
 } from "@mui/icons-material";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useRouter } from "next/navigation";
 
 export default function MusicPlayer() {
   const [open, setOpen] = useState(false);
+  const router =useRouter();
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -33,16 +35,18 @@ export default function MusicPlayer() {
             position: "absolute",
             borderRadius: "7px",
             border: "1px solid ",
-			borderColor:"text.primary",
+            borderColor: "text.primary",
             width: "200px",
             height: "250px",
             bottom: 30,
             left: 250,
-			padding:"5px",
-			justifyContent:"center"
+            padding: "5px",
+            justifyContent: "center",
+            backgroundColor:"background.paper",
           }}
         >
-          A
+          NO SONGS FOR NOW 
+          <Button onClick={()=>router.push("/music")}>Create Playlist</Button>
         </Grid>
       )}
     </Grid>

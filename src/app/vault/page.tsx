@@ -2,17 +2,40 @@
 
 import { Button, Grid, Typography } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
-import { useNoteStore } from "@/lib/useNoteStore";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+
+type Note = {
+  id: string;
+  title: string;
+  content: string;
+  createdAt?: any;
+  updatedAt?: any;
+};
 
 export default function VaultPage() {
-  const { notes } = useNoteStore();
-  const router = useRouter();
   const { user, userData } = useAuth();
+  const router = useRouter();
+  const [notes, setNotes] = useState<Note[]>([]);
 
-  //console.log(userData)
+  useEffect(() => {
+    const fetchNotes = async () => {
+      if (!user) return;
+      const notesRef = collection(db, "users", user.uid, "notes");
+      const snapshot = await getDocs(notesRef);
+      const noteList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Note[];
+
+      setNotes(noteList);
+    };
+
+    fetchNotes();
+  }, [user]);
 
   return (
     <>
@@ -22,11 +45,12 @@ export default function VaultPage() {
           fontFamily: "Cinzel",
           fontWeight: "bold",
           fontSize: "24px",
-          mt:10
+          mt: 10,
         }}
       >
         WELCOME TO NOCTURA {userData?.name}
       </Typography>
+
       <Button
         variant="contained"
         color="primary"
@@ -38,9 +62,9 @@ export default function VaultPage() {
 
       <Grid container spacing={2}>
         {notes.map((note) => (
-          <Grid size={{ xs: 12, md: 4 }} key={note.slug}>
+          <Grid size={{xs:12,md:4}} key={note.id}>
             <Link
-              href={`/vault/${note.slug}`}
+              href={`/vault/${note.id}`}
               passHref
               style={{ textDecoration: "none" }}
             >
@@ -53,7 +77,20 @@ export default function VaultPage() {
                   boxShadow: "0 0 4px #00000080",
                 }}
               >
-                
+                <Typography variant="h6" color="primary">
+                  {note.title}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {note.content}
+                </Typography>
               </div>
             </Link>
           </Grid>

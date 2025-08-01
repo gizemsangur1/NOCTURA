@@ -23,7 +23,7 @@ export default function Topbar() {
   });
 
   const themeBgMap: Record<string, string> = {
-    "#b92e34": "/bloodyBanner.jpeg",
+    "#b92e34": "/bloodyBanner3.jpeg",
     "#aaa": "/foggybanner.jpeg",
     "#6a4c93": "/violetbanner.jpeg",
   };

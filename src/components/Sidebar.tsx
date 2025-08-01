@@ -21,19 +21,10 @@ import {
 import MusicPlayer from "./MusicPlayer";
 import { useAuth } from "@/context/AuthContext";
 
-const navItems = [
-  { label: "Vault", href: "/vault", icon: <ArticleIcon /> },
-  { label: "Settings", href: "/settings", icon: <SettingsIcon /> },
-  { label: "Login", href: "/login", icon: <LoginRounded /> },
-  { label: "Register", href: "/register", icon: <DoorBackRounded /> },
-  { label: "Logout", href: "/", icon: <LogoutRounded /> },
-];
-
 export default function Sidebar() {
   const pathname = usePathname();
   const theme = useTheme();
-  const { logout } = useAuth();
-
+  const { user, logout } = useAuth();
 
   const themeBgMap: Record<string, string> = {
     "#b92e34": "/bloodySidebar.jpeg",
@@ -42,6 +33,7 @@ export default function Sidebar() {
   };
   const primaryColor = theme.palette.primary.main.toLowerCase();
   const bgImage = themeBgMap[primaryColor] || "";
+
   return (
     <Box
       sx={{
@@ -72,11 +64,48 @@ export default function Sidebar() {
       </Box>
 
       <List disablePadding>
-        {navItems.map((item) =>
-          item.label === "Logout" ? (
+        <Link href="/vault" passHref style={{ textDecoration: "none" }}>
+          <ListItemButton
+            selected={pathname.startsWith("/vault")}
+            sx={{
+              color: theme.palette.text.primary,
+              borderRadius: 1,
+              "&.Mui-selected": {
+                bgcolor: theme.palette.action.selected,
+                color: theme.palette.primary.main,
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: "inherit" }}>
+              <ArticleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Vault" />
+          </ListItemButton>
+        </Link>
+
+        {user ? (
+          <>
+            <Link href="/settings" passHref style={{ textDecoration: "none" }}>
+              <ListItemButton
+                selected={pathname.startsWith("/settings")}
+                sx={{
+                  color: theme.palette.text.primary,
+                  borderRadius: 1,
+                  "&.Mui-selected": {
+                    bgcolor: theme.palette.action.selected,
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ color: "inherit" }}>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
+              </ListItemButton>
+            </Link>
+
             <ListItemButton
-              key="logout"
-              onClick={() => logout()}
+              onClick={logout}
               sx={{
                 color: theme.palette.text.primary,
                 borderRadius: 1,
@@ -90,15 +119,12 @@ export default function Sidebar() {
               </ListItemIcon>
               <ListItemText primary="Logout" />
             </ListItemButton>
-          ) : (
-            <Link
-              key={item.href}
-              href={item.href}
-              passHref
-              style={{ textDecoration: "none" }}
-            >
+          </>
+        ) : (
+          <>
+            <Link href="/login" passHref style={{ textDecoration: "none" }}>
               <ListItemButton
-                selected={pathname.startsWith(item.href)}
+                selected={pathname.startsWith("/login")}
                 sx={{
                   color: theme.palette.text.primary,
                   borderRadius: 1,
@@ -109,16 +135,36 @@ export default function Sidebar() {
                 }}
               >
                 <ListItemIcon sx={{ color: "inherit" }}>
-                  {item.icon}
+                  <LoginRounded />
                 </ListItemIcon>
-                <ListItemText primary={item.label} />
+                <ListItemText primary="Login" />
               </ListItemButton>
             </Link>
-          )
+
+            <Link href="/register" passHref style={{ textDecoration: "none" }}>
+              <ListItemButton
+                selected={pathname.startsWith("/register")}
+                sx={{
+                  color: theme.palette.text.primary,
+                  borderRadius: 1,
+                  "&.Mui-selected": {
+                    bgcolor: theme.palette.action.selected,
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ color: "inherit" }}>
+                  <DoorBackRounded />
+                </ListItemIcon>
+                <ListItemText primary="Register" />
+              </ListItemButton>
+            </Link>
+          </>
         )}
       </List>
+
       <Image width={200} height={200} src={bgImage} alt="sidebar" />
-      <MusicPlayer />
+   {/*    <MusicPlayer /> */}
     </Box>
   );
 }
