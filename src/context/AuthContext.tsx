@@ -22,6 +22,7 @@ type UserData = {
   username?: string;
   email: string;
   createdAt: Date;
+  themeName?:string;
 };
 
 type AuthContextType = {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Box, Button, TextField, Typography } from "@mui/material";
@@ -8,7 +8,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
-    const { user, userData } = useAuth();
+  const { user, userData } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,13 +24,17 @@ export default function LoginPage() {
       setError(err.message || "Login failed");
     }
   };
-  if(user){
-    router.push("/");
-  }
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   return (
     <Box maxWidth={400} mx="auto" mt={6}>
-      <Typography variant="h5" mb={2}>Login</Typography>
+      <Typography variant="h5" mb={2}>
+        Login
+      </Typography>
       <form onSubmit={handleLogin}>
         <TextField
           fullWidth

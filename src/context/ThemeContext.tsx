@@ -1,10 +1,10 @@
-'use client';
+"use client";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { Theme } from "@mui/material";
+import { themes } from "@/theme/theme";
+import { useAuth } from "./AuthContext"; 
 
-import React, { createContext, useContext, useState } from 'react';
-import { Theme } from '@mui/material';
-import { themes } from '@/theme/theme';
-
-type ThemeKey = keyof typeof themes;
+export type ThemeKey = keyof typeof themes;
 
 type ThemeContextType = {
   currentTheme: Theme;
@@ -15,7 +15,14 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProviderCustom = ({ children }: { children: React.ReactNode }) => {
-  const [themeName, setThemeName] = useState<ThemeKey>('bloodMoon');
+  const { userData } = useAuth(); 
+  const [themeName, setThemeName] = useState<ThemeKey>("bloodMoon");
+
+  useEffect(() => {
+    if (userData?.themeName && Object.keys(themes).includes(userData.themeName)) {
+      setThemeName(userData.themeName as ThemeKey);
+    }
+  }, [userData]);
 
   return (
     <ThemeContext.Provider value={{ currentTheme: themes[themeName], themeName, setThemeName }}>
@@ -26,6 +33,6 @@ export const ThemeProviderCustom = ({ children }: { children: React.ReactNode })
 
 export const useThemeCustom = () => {
   const context = useContext(ThemeContext);
-  if (!context) throw new Error('useThemeCustom must be used inside ThemeProviderCustom');
+  if (!context) throw new Error("useThemeCustom must be used inside ThemeProviderCustom");
   return context;
 };

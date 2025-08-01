@@ -12,7 +12,7 @@ export default function VaultPage() {
   const router = useRouter();
   const { user, userData } = useAuth();
 
-  console.log(userData)
+  //console.log(userData)
 
   return (
     <>
