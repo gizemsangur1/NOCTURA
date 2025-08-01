@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import LayoutShell from '@/components/LayoutShell';
-import { ThemeProviderCustom, useThemeCustom } from '@/context/ThemeContext';
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import LayoutShell from "@/components/LayoutShell";
+import { ThemeProviderCustom, useThemeCustom } from "@/context/ThemeContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 function ThemedApp({ children }: { children: React.ReactNode }) {
   const { currentTheme } = useThemeCustom();
@@ -14,7 +15,11 @@ function ThemedApp({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <head>
@@ -24,9 +29,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <ThemeProviderCustom>
-          <ThemedApp>{children}</ThemedApp>
-        </ThemeProviderCustom>
+        <AuthProvider>
+          <ThemeProviderCustom>
+            <ThemedApp>{children}</ThemedApp>
+          </ThemeProviderCustom>
+        </AuthProvider>
       </body>
     </html>
   );
