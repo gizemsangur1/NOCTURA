@@ -18,7 +18,7 @@ export const themes = {
       primary: { main: '#aaa' },
       text: { primary: '#ccc', secondary: '#888' },
     },
-    typography: { fontFamily: `'EB Garamond', serif` },
+    typography: { fontFamily: `'Cinzel', 'EB Garamond', serif` },
   }),
 
   mourningViolet: createTheme({

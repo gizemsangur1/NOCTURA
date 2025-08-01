@@ -3,3 +3,19 @@ body {
   background-color: #1a1515;
   color: #e0e0e0;
 }
+.tiptap-editor {
+  color: #fff;
+  outline: none;
+  min-height: 200px;
+  font-family: 'Crimson Pro', serif;
+}
+
+.tiptap-editor h1 {
+  font-size: 1.8rem;
+  color: #e63946;
+}
+
+.tiptap-editor p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
