@@ -48,7 +48,7 @@ export default function VaultPage() {
           mt: 10,
         }}
       >
-        WELCOME TO NOCTURA {userData?.name}
+        WELCOME TO THE VAULT {userData?.name}
       </Typography>
 
       <Button

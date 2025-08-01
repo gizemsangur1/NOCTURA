@@ -6,11 +6,12 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import ArticleIcon from "@mui/icons-material/Article";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import {
@@ -25,6 +26,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const theme = useTheme();
   const { user, logout } = useAuth();
+  const router = useRouter();
 
   const themeBgMap: Record<string, string> = {
     "#b92e34": "/bloodySidebar.jpeg",
@@ -33,6 +35,11 @@ export default function Sidebar() {
   };
   const primaryColor = theme.palette.primary.main.toLowerCase();
   const bgImage = themeBgMap[primaryColor] || "";
+
+  const handleLogout = async () => {
+    await logout();
+    window.location.reload();
+  };
 
   return (
     <Box
@@ -58,7 +65,9 @@ export default function Sidebar() {
           fontSize: "1.4rem",
           color: theme.palette.primary.main,
           mb: 4,
+          cursor: "pointer",
         }}
+        onClick={() => router.push("/")}
       >
         NOCTURA
       </Box>
@@ -105,7 +114,7 @@ export default function Sidebar() {
             </Link>
 
             <ListItemButton
-              onClick={logout}
+              onClick={handleLogout}
               sx={{
                 color: theme.palette.text.primary,
                 borderRadius: 1,
@@ -164,7 +173,7 @@ export default function Sidebar() {
       </List>
 
       <Image width={200} height={200} src={bgImage} alt="sidebar" />
-   {/*    <MusicPlayer /> */}
+      {/*    <MusicPlayer /> */}
     </Box>
   );
 }
