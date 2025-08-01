@@ -1,25 +1,13 @@
-"use client";
+export const metadata = {
+  title: "NΘCTURA",
+  description: "Encrypted knowledge vault",
+};
 
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import LayoutShell from "@/components/LayoutShell";
-import { ThemeProviderCustom, useThemeCustom } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProviderCustom } from "@/context/ThemeContext";
+import ClientLayout from "@/components/ClientLayout";
 
-function ThemedApp({ children }: { children: React.ReactNode }) {
-  const { currentTheme } = useThemeCustom();
-  return (
-    <ThemeProvider theme={currentTheme}>
-      <CssBaseline />
-      <LayoutShell>{children}</LayoutShell>
-    </ThemeProvider>
-  );
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -31,7 +19,7 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <ThemeProviderCustom>
-            <ThemedApp>{children}</ThemedApp>
+            <ClientLayout>{children}</ClientLayout>
           </ThemeProviderCustom>
         </AuthProvider>
       </body>
