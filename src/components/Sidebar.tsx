@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import { DoorBackRounded, LoginRounded, LogoutRounded } from "@mui/icons-material";
+import MusicPlayer from "./MusicPlayer";
 
 const navItems = [
   { label: "Vault", href: "/vault", icon: <ArticleIcon /> },
@@ -49,6 +50,8 @@ export default function Sidebar() {
         display: "flex",
         flexDirection: "column",
         gap: 2,
+        justifyContent:"center",
+        alignItems:"center"
       }}
     >
       <Box
@@ -83,6 +86,7 @@ export default function Sidebar() {
         ))}
       </List>
       <Image width={200} height={200} src={bgImage} alt="sidebar" />
+      <MusicPlayer/>
     </Box>
   );
 }
