@@ -1,14 +1,15 @@
 'use client';
 
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { Box, Container, Typography } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useNoteStore } from '@/lib/useNoteStore';
 import { useEffect, useState } from 'react';
 
-export default function Page({ params }: { params: { slug: string } }) {
+export default function Page() {
   const { notes } = useNoteStore();
+  const params = useParams(); // ✅ Yeni sistem
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -17,7 +18,9 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   if (!hydrated) return null;
 
-  const file = notes.find((f) => f.slug === params.slug);
+  const slug = typeof params.slug === 'string' ? params.slug : Array.isArray(params.slug) ? params.slug[0] : '';
+  const file = notes.find((f) => f.slug === slug);
+
   if (!file) return notFound();
 
   return (

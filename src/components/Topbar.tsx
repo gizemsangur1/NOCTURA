@@ -3,14 +3,18 @@
 import {
   AppBar,
   Box,
+  Grid,
   Toolbar,
   Typography,
   useTheme,
 } from "@mui/material";
 import ThemeSwitcher from "./ThemeSwitcher";
+import { ArrowBack } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 export default function Topbar() {
   const theme = useTheme();
+  const router=useRouter();
 
   const date = new Date().toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -19,13 +23,13 @@ export default function Topbar() {
   });
 
   const themeBgMap: Record<string, string> = {
-    '#b92e34': '/bloodybanner.jpeg',
-    '#aaa': '/foggybanner.jpeg',
-    '#6a4c93': '/violetbanner.jpeg',
+    "#b92e34": "/bloodyBanner.jpeg",
+    "#aaa": "/foggybanner.jpeg",
+    "#6a4c93": "/violetbanner.jpeg",
   };
 
   const primaryColor = theme.palette.primary.main.toLowerCase();
-  const bgImage = themeBgMap[primaryColor] || '';
+  const bgImage = themeBgMap[primaryColor] || "";
 
   return (
     <AppBar
@@ -49,16 +53,19 @@ export default function Topbar() {
           minHeight: "64px",
         }}
       >
-        <Typography
-          variant="subtitle2"
-          sx={{
-            fontFamily: "Cinzel",
-            color: "primary.main",
-            letterSpacing: 1,
-          }}
-        >
-          {date}
-        </Typography>
+        <Box sx={{width:"100%",display:"flex"}}>
+          <ArrowBack style={{ fontSize: "18px",marginRight:"15px",color:"text.primary",cursor:"pointer" }} onClick={()=>router.back()}/>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              fontFamily: "Cinzel",
+              color: "text.primary",
+              letterSpacing: 1,
+            }}
+          >
+            {date}
+          </Typography>
+        </Box>
 
         <Box>
           <ThemeSwitcher />
