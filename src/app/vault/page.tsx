@@ -12,9 +12,10 @@ type Note = {
   id: string;
   title: string;
   content: string;
-  createdAt?: any;
-  updatedAt?: any;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
+
 
 export default function VaultPage() {
   const { user, userData } = useAuth();
