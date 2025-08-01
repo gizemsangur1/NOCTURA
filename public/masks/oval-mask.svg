@@ -1,0 +1,5 @@
+<!-- public/masks/oval-mask.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100%" height="100%" fill="black" />
+  <ellipse cx="50" cy="50" rx="40" ry="48" fill="white" />
+</svg>

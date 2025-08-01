@@ -91,6 +91,24 @@ export default function Sidebar() {
             <ListItemText primary="Vault" />
           </ListItemButton>
         </Link>
+        <Link href="/photoBooth" passHref style={{ textDecoration: "none" }}>
+          <ListItemButton
+            selected={pathname.startsWith("/photoBooth")}
+            sx={{
+              color: theme.palette.text.primary,
+              borderRadius: 1,
+              "&.Mui-selected": {
+                bgcolor: theme.palette.action.selected,
+                color: theme.palette.primary.main,
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: "inherit" }}>
+              <ArticleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Photo Booth" />
+          </ListItemButton>
+        </Link>
 
         {user ? (
           <>
