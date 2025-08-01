@@ -14,16 +14,21 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    try {
-      await register(email, password);
-      router.push("/");
-    } catch (err: any) {
-      setError(err.message || "Registration failed");
+const handleRegister = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
+  try {
+    await register(email, password);
+    router.push("/");
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      setError(err.message);
+    } else {
+      setError("Registration failed");
     }
-  };
+  }
+};
+;
 
   useEffect(() => {
     if (user) {
