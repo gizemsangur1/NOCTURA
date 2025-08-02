@@ -30,7 +30,7 @@ export default function Home() {
 
         {userData && (
           <Typography sx={{ fontSize: "18px", mt: 2 }}>
-            <TypingText text="WANT TO START YOUR JOURNEY ?" />
+            <TypingText text="  WANT TO START YOUR JOURNEY ?" />
           </Typography>
         )}
       </Grid>
